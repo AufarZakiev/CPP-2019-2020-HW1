@@ -23,7 +23,7 @@ class User{
     static int total_count;
 public:
     explicit User(QString name, int age=18){
-        if(age>=18){
+        if(age>=20){
             this->age=age;
         }else{
             this->age=18;
