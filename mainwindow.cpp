@@ -26,7 +26,7 @@ public:
         if(age>=20){
             this->age=age;
         }else{
-            this->age=18;
+            this->age=20;
         }
         this->name=name;
         total_count++;
