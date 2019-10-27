@@ -41,10 +41,13 @@ public:
         return total_count;
     }
     static std::vector<User> users_;
+
 };
 
 int User::total_count = 0;
 std::vector<User> User::users_;
+
+
 
 void MainWindow::on_submitPushButton_clicked()
 {
@@ -65,4 +68,33 @@ void MainWindow::on_submitPushButton_clicked()
     qDebug() << "First student name ([0]):" << User::users_[0].getName();
     qDebug() << "First student name (at):" << User::users_.at(0).getName();
     qDebug() << "------------------------";
+
+
 }
+
+void addStudent(QString name, int age){
+    User::users_.push_back(*new User(name,age));
+}
+
+long itsAFinalCoundown(){
+    return User::users_.size();
+}
+
+void delStudent(long index){
+    for (long i = index; i < User::users_.size()-1;i++);
+    User::users_.at(index) = User::users_.at(index+1);
+}
+
+void delStudent(QString name){
+    long index = -1;
+    for (long i = 0 ; i < User::users_.size();i++)
+    {
+        if (User::users_.at(i).getName() == name)
+        index = i;
+    }
+    if (index != -1){
+        for (long i = index; i < User::users_.size()-1;i++);
+        User::users_.at(index) = User::users_.at(index+1);
+    }
+}
+
