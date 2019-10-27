@@ -48,21 +48,48 @@ std::vector<User> User::users_;
 
 void MainWindow::on_submitPushButton_clicked()
 {
-    qDebug() << "User clicked on submit button";
-    // ui->nameLineEdit->setText("Aufar");
-    User student(ui->nameLineEdit->text(), ui->ageLineEdit->text().toInt());
+    qDebug() << "User added the student";
 
+    User student(ui->nameLineEdit->text(), ui->ageLineEdit->text().toInt());
     QMessageBox msg(QMessageBox::Information,"New student arrived!",
-                    "Hello "+ student.getName() + "!");
-    // qDebug() << "Name:" << student.getName();
-    // qDebug() << "Age:" << student.getAge();
+                    "Hello, "+ student.getName() + "!");
     qDebug() << msg.exec();
-    qDebug() << User::getTotalCount();
     User::users_.push_back(student);
-    //qDebug() << "Last student age:" << User::users_.end()->getAge();
-    //qDebug() << "Last student name:" << User::users_.end()->getName();
-    qDebug() << "Total count:" << User::users_.size();
-    qDebug() << "First student name ([0]):" << User::users_[0].getName();
-    qDebug() << "First student name (at):" << User::users_.at(0).getName();
+
+    qDebug() << "------------------------";
+}
+
+void MainWindow::on_deleteByIndex_clicked()
+{
+    qDebug() << "User deleted the student by index";
+
+    int index(ui->indexEditLine->text().toInt());
+    User::users_.erase(User::users_.begin()+index);
+
+    qDebug() << "------------------------";
+}
+
+void MainWindow::on_deleteByName_clicked()
+{
+    qDebug() << "User deleted student by name";
+
+    QString nameDel(ui->nameEditLineDel->text());
+    for (int i=0; i < User::users_.size(); i++) {
+        if (User::users_[i].getName()==nameDel)
+        {
+            User::users_.erase(User::users_.begin()+i);
+            break;
+        }
+    }
+
+    qDebug() << "------------------------";
+}
+
+void MainWindow::on_totalCount_clicked()
+{
+    qDebug() << "User got the total count";
+
+    qDebug() << User::users_.size();
+
     qDebug() << "------------------------";
 }

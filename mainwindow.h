@@ -17,6 +17,9 @@ public:
 
 private slots:
     void on_submitPushButton_clicked();
+    void on_deleteByIndex_clicked();
+    void on_deleteByName_clicked();
+    void on_totalCount_clicked();
 
 private:
     Ui::MainWindow *ui;
