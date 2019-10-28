@@ -46,9 +46,9 @@ public:
         return users_.size();
     }
 
-    static void addStudent(QString name, int age){
-        qDebug() << "Сработал метод addStudent(" << name << ", " << age << ");";
-        User::users_.push_back(*new User(name, age));
+    static void addStudent(User user){
+        qDebug() << "Сработал метод addStudent(" << user.getName() << ", " << user.getAge() << ");";
+        User::users_.push_back(user);
     }
 
     static void deleteByIndex(int index){
@@ -72,7 +72,7 @@ void MainWindow::on_submitPushButton_clicked()
     qDebug() << "User clicked on submit button";
     QString name = ui->nameLineEdit->text();
     int age = ui->ageLineEdit->text().toInt();
-    User::addStudent(name, age);
+    User::addStudent(User(name, age));
 
     QMessageBox msg(QMessageBox::Information,"New student arrived!",
                     "Hello " + name + "!");
