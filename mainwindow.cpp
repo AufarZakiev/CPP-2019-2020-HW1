@@ -19,8 +19,8 @@ MainWindow::~MainWindow()
 
 
 class User{
-    int age; // private
-    QString name; //private
+    int age_; // private
+    QString name_; //private
     static QLinkedList<User> users_;
 
 
@@ -45,25 +45,22 @@ public:
         }
         return false;
     }
-   static  int getStudentListSize(){
+   static int getStudentListSize(){
         return users_.size();
     }
     explicit User(QString name, int age=18){
         if(age>=18){
-            this->age=age;
+            this->age_=age;
         }else{
-            this->age=18;
+            this->age_=18;
         }
-        this->name=name;
+        this->name_=name;
     }
     QString getName(){
-        return name;
+        return name_;
     }
     int getAge(){
-        return age;
-    }
-    static int getTotalCount(){
-        return users_.size();
+        return age_;
     }
 
 };
@@ -78,7 +75,6 @@ void MainWindow::on_submitPushButton_clicked()
     User::addStudent(b);
     qDebug() << User::getStudentListSize();
     User::addStudent(c);
-
     qDebug() << User::getStudentListSize();
 
     User::removeByName("c");
