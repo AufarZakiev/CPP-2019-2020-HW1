@@ -19,11 +19,11 @@ MainWindow::~MainWindow()
 
 class User{
 private:
-    int age_; // private
-    QString name_; //private
+    int age_;
+    QString name_;
+    static std::vector<User> users_;
 
 public:
-    static std::vector<User> users_;
     explicit User(QString name, int age=18){
         if(age>=18){
             this->age_=age;
@@ -75,7 +75,7 @@ void MainWindow::on_submitPushButton_clicked()
     User::addStudent(name, age);
 
     QMessageBox msg(QMessageBox::Information,"New student arrived!",
-                    "Hello " + User::users_[User::users_.size() - 1].getName() + "!");
+                    "Hello " + name + "!");
     qDebug() << msg.exec();
 
     qDebug() << "Total count:" << User::getTotalCount();
