@@ -18,42 +18,48 @@ MainWindow::~MainWindow()
 
 
 class User{
-    int age; // private
-    QString name; //private
+    int age_; // private
+    QString name_; //private
     static int total_count;
 public:
     explicit User(QString name, int age=18){
         if(age>=18){
-            this->age=age;
+            this->age_=age;
         }else{
-            this->age=18;
+            this->age_=18;
         }
-        this->name=name;
+        this->name_=name;
         total_count++;
     }
     QString getName(){
-        return name;
+        return name_;
     }
     int getAge(){
-        return age;
+        return age_;
     }
 
-    static std::vector<User> users_;
+private:    static std::vector<User> users_;
 
 public:
-    void deleteByIndex(int index){
+    static void deleteByIndex(int index){
         User::users_.erase(User::users_.begin()+index);
     }
 
-    void deleteByName(int index){
-        User::users_.erase(User::users_.begin()+index);
+    static void deleteByName(QString nameDel){
+        for (int i=0; i < User::getTotalCount(); i++) {
+            if (User::users_[i].getName()==nameDel)
+            {
+                User::users_.erase(User::users_.begin()+i);
+                break;
+            }
+        }
     }
 
-    int getTotalCount(){
+    static int getTotalCount(){
         return User::users_.size();
     }
 
-    void addStudent(QString name, int age){
+    static void addStudent(QString name, int age){
         User student(name, age);
         User::users_.push_back(student);
     }
@@ -73,7 +79,7 @@ void MainWindow::on_submitPushButton_clicked()
     //User::users_.push_back(student);
     QString name = ui->nameLineEdit->text();
     int age = ui->ageLineEdit->text().toInt();
-    User::users_[User::users_.size()].addStudent(name, age);
+    User::addStudent(name, age);
 
     qDebug() << "------------------------";
 }
@@ -84,10 +90,10 @@ void MainWindow::on_deleteByIndex_clicked()
 
     int index(ui->indexEditLine->text().toInt());
     //User::users_.erase(User::users_.begin()+index);
-    for (int i = 0; i < User::users_.size(); i++)
+    for (int i = 0; i < User::getTotalCount(); i++)
         if (index == i)
         {
-            User::users_[i].deleteByIndex(i);
+            User::deleteByIndex(i);
             break;
         }
 
@@ -99,13 +105,7 @@ void MainWindow::on_deleteByName_clicked()
     qDebug() << "User deleted student by name";
 
     QString nameDel(ui->nameEditLineDel->text());
-    for (int i=0; i < User::users_.size(); i++) {
-        if (User::users_[i].getName()==nameDel)
-        {
-            User::users_[i].deleteByName(i);
-            break;
-        }
-    }
+    User::deleteByName(nameDel);
 
     qDebug() << "------------------------";
 }
@@ -115,7 +115,7 @@ void MainWindow::on_totalCount_clicked()
     qDebug() << "User got the total count";
 
     //qDebug() << User::users_.size();
-    qDebug() << User::users_[0].getTotalCount();
+    qDebug() << User::getTotalCount();
 
     qDebug() << "------------------------";
 }
