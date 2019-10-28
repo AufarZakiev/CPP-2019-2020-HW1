@@ -20,7 +20,6 @@ MainWindow::~MainWindow()
 class User{
     int age_; // private
     QString name_; //private
-    static int total_count;
 public:
     explicit User(QString name, int age=18){
         if(age>=18){
@@ -29,7 +28,6 @@ public:
             this->age_=18;
         }
         this->name_=name;
-        total_count++;
     }
     QString getName(){
         return name_;
@@ -65,7 +63,6 @@ public:
     }
 };
 
-int User::total_count = 0;
 std::vector<User> User::users_;
 
 void MainWindow::on_submitPushButton_clicked()
