@@ -46,17 +46,17 @@ public:
         User::users_.push_back(*new User(name,age));
     }
     
-    long itsAFinalCoundown(){
+    static long itsAFinalCoundown(){
         return User::users_.size();
     }
     
-    void delStudent(long index){
+    static void delStudent(long index){
         for (long i = index; i < User::users_.size()-1;i++);
         User::users_.at(index) = User::users_.at(index+1);
         User::users_.erase(User::users_.begin()+ User::users_.size()-1);
     }
     
-    void delStudent(QString name){
+    static void delStudent(QString name){
         long index = -1;
         for (long i = 0 ; i < User::users_.size();i++)
         {
