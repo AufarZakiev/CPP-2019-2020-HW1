@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QMessageBox>
+#include <QLinkedList>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -20,39 +21,33 @@ MainWindow::~MainWindow()
 class User{
     int age; // private
     QString name; //private
-    static int total_count;
-    static std::vector<User> users_;
+    static QLinkedList<User> users_;
 
 
 public:
 
     static void addStudent(User user){
-        users_.push_back(user);
+        users_.append(user);
     }
     static void removeStudentByIndex(int index){
-        std::vector<User>::iterator iterator_ = users_.begin();
+        QLinkedList<User>::iterator iterator_ = users_.begin();
         if(index < users_.size())
         users_.erase(iterator_ + index);
-        users_.shrink_to_fit();
     }
     static bool removeByName(QString studentName){
-        std::vector<User>::iterator iterator_= users_.begin();
+        QLinkedList<User>::iterator iterator_= users_.begin();
         while(iterator_ != users_.end()){
             if( (*iterator_).getName() == studentName ){
                 users_.erase(iterator_);
-                users_.shrink_to_fit();
                 return true;
             }
             iterator_++;
         }
         return false;
     }
-
    static  int getStudentListSize(){
         return users_.size();
     }
-
-
     explicit User(QString name, int age=18){
         if(age>=18){
             this->age=age;
@@ -60,7 +55,6 @@ public:
             this->age=18;
         }
         this->name=name;
-        total_count++;
     }
     QString getName(){
         return name;
@@ -69,13 +63,12 @@ public:
         return age;
     }
     static int getTotalCount(){
-        return total_count;
+        return users_.size();
     }
 
 };
 
-int User::total_count = 0;
-std::vector<User> User::users_;
+QLinkedList<User> User::users_;
 
 void MainWindow::on_submitPushButton_clicked()
 {
