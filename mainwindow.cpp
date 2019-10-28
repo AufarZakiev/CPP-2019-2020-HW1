@@ -18,27 +18,27 @@ MainWindow::~MainWindow()
 
 
 class User{
-    int age; // private
-    QString name; //private
+    int age_; // private
+    QString name_; //private
     static int total_count;
 
 public:
     explicit User(QString name, int age=18){
         if(age>=18){
-            this->age=age;
+            this->age_=age;
         }else{
-            this->age=18;
+            this->age_=18;
         }
-        this->name=name;
+        this->name_=name;
         total_count++;
     }
 
     QString getName(){
-        return name;
+        return name_;
     }
 
     int getAge(){
-        return age;
+        return age_;
     }
 
     static unsigned long getTotalCount(){
@@ -48,8 +48,7 @@ public:
 
     static void addStudent(QString name, int age){
         qDebug() << "Сработал метод addStudent(" << name << ", " << age << ");";
-        User student(name, age);
-        User::users_.push_back(student);
+        User::users_.push_back(*new User(name, age));
     }
 
     static void deleteByIndex(int index){
