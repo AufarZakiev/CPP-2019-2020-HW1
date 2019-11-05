@@ -19,24 +19,24 @@ MainWindow::~MainWindow()
 
 class User{
 private:
-    int age;
-    QString name;
+    int age_;
+    QString name_;
     //static int total_count;
     static std::vector<User> users_;
 public:
     explicit User(QString name, int age=18){
         if(age>=18){
-            this->age=age;
+            this->age_=age;
         }else{
-            this->age=18;
+            this->age_=18;
         }
-        this->name=name;
+        this->name_=name;
     }
     QString getName(){
-        return name;
+        return name_;
     }
     int getAge(){
-        return age;
+        return age_;
     }
     
     static void addStudent(User user){
