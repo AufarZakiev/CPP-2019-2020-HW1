@@ -4,9 +4,7 @@
 #include <QMessageBox>
 
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 }
@@ -17,43 +15,94 @@ MainWindow::~MainWindow()
 }
 
 
-class User{
-    int age; // private
-    QString name; //private
+class User
+{
+private:
+    int age;
+    QString name;
     static int total_count;
 public:
-    explicit User(QString name, int age=18){
-        if(age>=18){
+    explicit User(QString name, int age=18)
+    {
+        if(age>=18)
+        {
             this->age=age;
-        }else{
+        }
+        else
+        {
             this->age=18;
         }
         this->name=name;
         total_count++;
     }
-    QString getName(){
+
+    QString getName()
+    {
         return name;
     }
-    int getAge(){
+
+    int getAge()
+    {
         return age;
     }
-    static int getTotalCount(){
+
+    static int getTotalCount()
+    {
         return total_count;
     }
+
+    static size_t getCount()
+    {
+        return  users_.size();
+    }
+
+    static void addUser(User user)
+    {
+        users_.push_back(user);
+    }
+
+    static void removeUserAt(int index)
+    {
+        users_.erase(users_.begin() + index);
+    }
+
+    static void removeUserByName(QString name)
+    {
+        for ( std::vector<User>::iterator it = users_.begin(); it < users_.end(); it++)
+        {
+            if (it->name == name)
+            {
+                users_.erase(it);
+                break;
+            }
+        }
+    }
+
+    static std::vector<QString> getAllNames()
+    {
+        std::vector<QString> list;
+        for ( std::vector<User>::iterator it = users_.begin(); it < users_.end(); it++)
+        {
+            list.push_back(it->name);
+        }
+        return  list;
+    }
+
     static std::vector<User> users_;
 };
+
 
 int User::total_count = 0;
 std::vector<User> User::users_;
 
 void MainWindow::on_submitPushButton_clicked()
 {
+    /*
     qDebug() << "User clicked on submit button";
     // ui->nameLineEdit->setText("Aufar");
     User student(ui->nameLineEdit->text(), ui->ageLineEdit->text().toInt());
 
-    QMessageBox msg(QMessageBox::Information,"New student arrived!",
-                    "Hello "+ student.getName() + "!");
+    QMessageBox msg(QMessageBox::Information,"New student arrived!", "Hello "+ student.getName() + "!");
     // qDebug() << "Name:" << student.getName();
     // qDebug() << "Age:" << student.getAge();
     qDebug() << msg.exec();
@@ -65,4 +114,36 @@ void MainWindow::on_submitPushButton_clicked()
     qDebug() << "First student name ([0]):" << User::users_[0].getName();
     qDebug() << "First student name (at):" << User::users_.at(0).getName();
     qDebug() << "------------------------";
+    */
+
+    // Добавление студентов
+    User::addUser(User("Timofey", 22));
+    User::addUser(User("Aufar", 33));
+    User::addUser(User("Valery", 44));
+    User::addUser(User("Kirill", 55));
+    User::addUser(User("Artem", 66));
+    User::addUser(User("Camila", 77));
+
+    // Текущий число и список студентов
+    qDebug() << "Current students' count: " << User::getCount();
+    qDebug() << "All students: ";
+    qDebug() << User::getAllNames();
+
+    // Удаление студента номер 4
+    qDebug() << "Removing user at 4 index";
+    User::removeUserAt(4);
+
+    // Текущее число и список студентов
+    qDebug() << "Current Students' Count: " << User::getCount();
+    qDebug() << "All students: ";
+    qDebug() << User::getAllNames();
+
+    // Удаление студента по имени
+    qDebug() << "Removing user named Aufar ";
+    User::removeUserByName("Aufar");
+
+    // Текущее число и список студентов
+    qDebug() << "Current Students' Count: " << User::getCount();
+    qDebug() << "All students: ";
+    qDebug() << User::getAllNames();
 }
