@@ -20,7 +20,6 @@ MainWindow::~MainWindow()
 class User{
     int age_;
     QString name_;
-    static int totalCount_;
 public:
     explicit User(QString name, int age=18){
         if(age>=18){
@@ -29,28 +28,22 @@ public:
             this->age_=18;
         }
         this->name_=name;
-        totalCount_++;
     }
-    static bool addUser(User user){
-        if(totalCount_ == INT_MAX){
-            return false;
-        }
+    static void addUser(User user){
         users.push_back(user);
-        return true;
     }
-    static bool addUser(QString name, int age=18){
+    static void addUser(QString name, int age=18){
         User user(name, age);
-        return addUser(user);
+        addUser(user);
     }
-    static bool removeUser(int index){
-        if (index<totalCount_ && index>=0){
+    static bool removeUser(unsigned long index){
+        if (index<getTotalCount() && index>=0){
             users.erase(users.begin()+index);
-            totalCount_--;
             return true;
         }
         return false;
     }
-    static int removeUser(QString name){
+    static unsigned long removeUser(QString name){
         int erased = 0;
         for(auto i=users.begin(); i<users.end(); i++){
             if(i->name_ == name){
@@ -66,13 +59,12 @@ public:
     int getAge(){
         return age_;
     }
-    static int getTotalCount(){
-        return totalCount_;
+    static unsigned long getTotalCount(){
+        return users.size();
     }
     static std::vector<User> users;
 };
 
-int User::totalCount_ = 0;
 std::vector<User> User::users;
 
 void MainWindow::on_submitPushButton_clicked()
