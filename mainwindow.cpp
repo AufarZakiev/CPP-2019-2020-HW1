@@ -31,16 +31,16 @@ public:
         this->name_=name;
         totalCount_++;
     }
-    static bool addStudent(User user){
+    static bool addUser(User user){
         if(totalCount_ == INT_MAX){
             return false;
         }
         users.push_back(user);
         return true;
     }
-    static bool addStudent(QString name, int age=18){
+    static bool addUser(QString name, int age=18){
         User user(name, age);
-        return addStudent(user);
+        return addUser(user);
     }
     static bool removeUser(int index){
         if (index<totalCount_ && index>=0){
