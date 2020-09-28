@@ -38,7 +38,7 @@ public:
         users_.push_back(new_user);
     }
 
-    static int getNum(){
+    static size_t getNum(){
         return users_.size();
     }
 
