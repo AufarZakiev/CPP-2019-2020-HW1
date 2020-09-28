@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QMessageBox>
-
+#include <vector>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,32 +18,61 @@ MainWindow::~MainWindow()
 
 
 class User{
-    int age; // private
-    QString name; //private
-    static int total_count;
+    int age_;
+    QString name_;
+    static int total_count_;
+
 public:
     explicit User(QString name, int age=18){
-        if(age>=18){
-            this->age=age;
-        }else{
-            this->age=18;
+        if(age >= 18){
+            this->age_=age;
         }
-        this->name=name;
-        total_count++;
+        else{
+            this->age_=18;
+        }
+        this->name_=name;
+        total_count_++;
     }
+
+    static void addStudents(User new_user){
+        users_.push_back(new_user);
+    }
+
+    static int getNum(){
+        return users_.size();
+    }
+
+    static void deleteStudentByNumber(int num){
+        users_.erase(users_.begin() + num);
+    }
+
+    static void deleteStudentByName(QString name){
+        for(unsigned int i = 0; i < users_.size(); i++) {
+            if(users_[i].getName() == name){
+                users_.erase(users_.begin() + i);
+            }
+            else{
+                qDebug() << "Nothing happened!";
+            }
+        }
+    }
+
     QString getName(){
-        return name;
+        return name_;
     }
+
     int getAge(){
-        return age;
+        return age_;
     }
+
     static int getTotalCount(){
-        return total_count;
+        return total_count_;
     }
+
     static std::vector<User> users_;
 };
 
-int User::total_count = 0;
+int User::total_count_ = 0;
 std::vector<User> User::users_;
 
 void MainWindow::on_submitPushButton_clicked()
