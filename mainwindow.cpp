@@ -46,6 +46,23 @@ public:
 int User::total_count = 0;
 std::vector<User> User::users_;
 
+static void ListOfUsers(User new_user){
+    users_.push_back(new_user);
+}
+static void DeleteUserById(int id){
+    users_.erase(v.begin() + id);
+}
+static int GetUserSize(){
+    return users_.size();
+}
+static void DeleteUserByName(QString name){
+    for(unsigned int i=0; i < users_.size(); i++)
+    {
+        if(users_[i].getName()== name)
+            users_.erase(users_.begin() + i);
+    }
+}
+
 void MainWindow::on_submitPushButton_clicked()
 {
     qDebug() << "User clicked on submit button";
