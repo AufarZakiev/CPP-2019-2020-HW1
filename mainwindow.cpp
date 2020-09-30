@@ -36,7 +36,7 @@ public:
         return age;
     }
 
-    static unsigned long long getTotalCount(){
+    static size_t getTotalCount(){
         return users_.size();
     }
 
@@ -45,7 +45,7 @@ public:
         users_.push_back(student);
     }
 
-    static bool deleteStudentByIndex(unsigned long long index){
+    static bool deleteStudentByIndex(size_t index){
       if((index<0)||(index>=getTotalCount()))
           {
              return false;
@@ -57,7 +57,7 @@ public:
     }
 
     static void deleteStudentByName(QString name){
-        for(unsigned long long i = 0; i < users_.size(); i++){
+        for(size_t i = 0; i < users_.size(); i++){
             if(name == users_[i].name)
                 users_.erase(users_.begin()+i);
         }
