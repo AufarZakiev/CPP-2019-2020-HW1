@@ -20,7 +20,7 @@ MainWindow::~MainWindow()
 class User{
     int age; // private
     QString name; //private
-    static int total_count;
+    static int index;
 public:
     explicit User(QString name, int age=18){
         if(age>=18){
@@ -29,7 +29,7 @@ public:
             this->age=18;
         }
         this->name=name;
-        total_count++;
+        index++;
     }
     QString getName(){
         return name;
@@ -37,32 +37,60 @@ public:
     int getAge(){
         return age;
     }
-    static int getTotalCount(){
-        return total_count;
+    static int getIndex(){
+        return index;
     }
     static std::vector<User> users_;
+    //1)метод добавления студентов
+     static void addUser(User student){
+       User::users_.push_back(student);
+    }
+    //2)метод удаления студентов по индексу
+      static void deleteUserByIndex(int index){
+        for(unsigned int i = 0;i<User::users_.size();i++){
+            if(User::users_[i].getIndex()==index){
+                User::User::users_.erase(User::users_.begin()+i);
+                qDebug()<<"Student with index "<<index<<" was succesfully deleted!";
+                break;
+            }
+        }
+    }
+    //3)метод удаления студентов по имени, студент есть в списке
+     static void deleteUserByName(QString name){
+        for(unsigned int i = 0;i<User::users_.size();i++){
+            if(User::users_[i].getName()==name){
+                User::users_.erase(User::users_.begin()+i);
+                qDebug()<<"Student "<<name<<" was succesfully deleted!";
+                break;
+            }
+        }
+    }
+    //4)метод получения количества студентов
+     static int totalCount(){
+         return users_.size();
+     }
 };
 
-int User::total_count = 0;
+int User:: index= 0;
 std::vector<User> User::users_;
 
-void MainWindow::on_submitPushButton_clicked()
+    void MainWindow::on_submitPushButton_clicked()
 {
     qDebug() << "User clicked on submit button";
-    // ui->nameLineEdit->setText("Aufar");
     User student(ui->nameLineEdit->text(), ui->ageLineEdit->text().toInt());
-
     QMessageBox msg(QMessageBox::Information,"New student arrived!",
                     "Hello "+ student.getName() + "!");
-    // qDebug() << "Name:" << student.getName();
-    // qDebug() << "Age:" << student.getAge();
     qDebug() << msg.exec();
-    qDebug() << User::getTotalCount();
-    User::users_.push_back(student);
-    //qDebug() << "Last student age:" << User::users_.end()->getAge();
-    //qDebug() << "Last student name:" << User::users_.end()->getName();
-    qDebug() << "Total count:" << User::users_.size();
-    qDebug() << "First student name ([0]):" << User::users_[0].getName();
-    qDebug() << "First student name (at):" << User::users_.at(0).getName();
+    //1)работа метода добавления студентов
+    User::addUser(student);
+    //4)работа метода получения количества студентов
+    qDebug() << "Total count:" << User::totalCount();
+    qDebug() <<"Index: "<<User::getIndex();
+    qDebug()<<"Student name:"<< User::users_[User::totalCount()-1].getName();
+    qDebug()<<"Student age:"<<User::users_[User::totalCount()-1].getAge();
     qDebug() << "------------------------";
+    //2)Пусть для примера программа будет удалять студента с именем Alex
+    User::deleteUserByName("Alex");
+    //3)Пусть для примера программа будет удалять студента с индексом 9
+    User::deleteUserByIndex(9);
 }
