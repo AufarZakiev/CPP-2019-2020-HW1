@@ -52,7 +52,7 @@ static void ListOfUsers(User new_user){
 static void DeleteUserById(int id){
     users_.erase(v.begin() + id);
 }
-static int GetUserSize(){
+static size_t GetUserSize(){
     return users_.size();
 }
 static void DeleteUserByName(QString name){
