@@ -18,29 +18,36 @@ MainWindow::~MainWindow()
 
 
 class User{
-    int age; // private
-    QString name; //private
+     int index;
+    QString name;
     static int total_count;
+    static std::vector<User> users_;
 public:
-    explicit User(QString name, int age=18){
-        if(age>=18){
-            this->age=age;
-        }else{
-            this->age=18;
-        }
+    explicit User(QString name, int index){
         this->name=name;
+        this->index=index;
         total_count++;
     }
     QString getName(){
         return name;
     }
-    int getAge(){
-        return age;
+    int getIndex(){
+        return index;
+    }
+
+    void add_student(User user){
+        users_.push_back(user);
+    }
+    void delete_student_index(int index){
+        users_.erase(std::remove(users_.begin(), users_.end(), index), users_.end());
+    }
+    void delete_student_name(QString name){
+        users_.erase(std::remove(users_.begin(), users_.end(), name), users_.end());
     }
     static int getTotalCount(){
         return total_count;
     }
-    static std::vector<User> users_;
+
 };
 
 int User::total_count = 0;
