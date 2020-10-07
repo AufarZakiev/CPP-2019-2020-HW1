@@ -19,9 +19,9 @@ MainWindow::~MainWindow()
 
 class User{
 private:
-    unsigned int age;
+    unsigned short age;
     QString name;
-    static int total_count;
+    static unsigned long total_count;
 public:
     explicit User(QString name, int age=18){
         if(age>=18)
@@ -50,7 +50,7 @@ public:
 
     static std::vector<User> users;
 
-    void deleteUserByIndex(unsigned int indexOfDeletedUser) {
+    void deleteUserByIndex(unsigned long indexOfDeletedUser) {
         if (indexOfDeletedUser > users.size()) {
             qDebug() << "Index of this user is more that our database can contain.";
             break;
