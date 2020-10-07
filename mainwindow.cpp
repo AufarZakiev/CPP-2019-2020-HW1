@@ -18,34 +18,38 @@ MainWindow::~MainWindow()
 
 
 class User{
-     int index;
     QString name;
     static int total_count;
     static std::vector<User> users_;
 public:
-    explicit User(QString name, int index){
+    explicit User(QString name){
         this->name=name;
-        this->index=index;
         total_count++;
     }
+
     QString getName(){
         return name;
     }
-    int getIndex(){
-        return index;
-    }
+
 
     void add_student(User user){
         users_.push_back(user);
     }
+
     void delete_student_index(int index){
-        users_.erase(std::remove(users_.begin(), users_.end(), index), users_.end());
+        users_.erase(index + users_.begin());
     }
+
     void delete_student_name(QString name){
-        users_.erase(std::remove(users_.begin(), users_.end(), name), users_.end());
+        for(int i = 0; i < users_.size(); i++){
+            if(name == users_[i].name){
+                users_.erase(users_.begin() + i);
+            }
+        }
     }
-    static int getTotalCount(){
-        return total_count;
+
+    size_t getTotalCount(){
+        return users_.size();
     }
 
 };
