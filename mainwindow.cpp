@@ -37,10 +37,26 @@ public:
     int getAge(){
         return age;
     }
-    static int getTotalCount(){
-        return total_count;
+    static size_t getTotalCount(){
+        return users_.size();
     }
     static std::vector<User> users_;
+
+    static void addUser(int age, QString name) {
+        User user = User(name, age);
+        users_.push_back(user);
+
+    }
+    static void deleteByIndex (int a) {
+        users_.erase(users_.begin() + a);
+    }
+    static void deleteByName (QString name) {
+        for(size_t i = 0; i < users_.size(); i++) {
+            if(users_[i].getName() == name) {
+                users_.erase(users_.begin() + i);
+            }
+        }
+    }
 };
 
 int User::total_count = 0;
