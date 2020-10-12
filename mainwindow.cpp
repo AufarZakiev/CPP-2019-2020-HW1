@@ -19,11 +19,11 @@ MainWindow::~MainWindow()
 
 class User{
 private:
-    unsigned int age;
+    short age;
     QString name;
-    static int total_count;
+    static size_t total_count;
 public:
-    explicit User(QString name, int age=18){
+    explicit User(QString name, short age=18){
         if(age>=18)
         {
             this->age=age;
@@ -40,23 +40,22 @@ public:
         return name;
     }
 
-    int getAge(){
+    short getAge(){
         return age;
     }
 
-    static unsigned long getTotalCount(){
+    static size_t getTotalCount(){
         return users.size();
     }
 
     static std::vector<User> users;
 
-    void deleteUserByIndex(unsigned int indexOfDeletedUser) {
-        if (indexOfDeletedUser > users.size()) {
-            qDebug() << "Index of this user is more that our database can contain.";
-            break;
+    void deleteUserByIndex(unsigned long indexOfDeletedUser) {
+        if (indexOfDeletedUser <= users.size()) {
+            users.erase(users.begin() + indexOfDeletedUser);
         }
         else {
-            users.erase(users.begin() + indexOfDeletedUser);
+            qDebug() << "Index of this user is more that our database can contain.";
         }
     }
 
@@ -78,7 +77,7 @@ public:
 
 };
 
-int User::total_count = 0;
+size_t User::total_count = 0;
 std::vector<User> User::users;
 
 void MainWindow::on_submitPushButton_clicked()
