@@ -17,7 +17,7 @@ class User
 {
   int age;       // private
   QString name;  // private
-  static int total_count;
+  // static int total_count; отказ от поля ->users_.size()
 
 public:
   explicit User(QString name, int age = 18)
@@ -31,7 +31,6 @@ public:
       this->age = 18;
     }
     this->name = name;
-    total_count++;
   }
   QString getName()
   {
@@ -43,8 +42,9 @@ public:
   }
   static int getTotalCount()
   {
-    return total_count;
+    return users_.size();
   }
+
   static std::vector<User> users_;
 
   void AddUser(User stud)
@@ -77,7 +77,6 @@ public:
   }
 };
 
-int User::total_count = 0;
 std::vector<User> User::users_;
 
 void MainWindow::on_submitPushButton_clicked()
