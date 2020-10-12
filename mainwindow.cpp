@@ -18,33 +18,67 @@ MainWindow::~MainWindow()
 
 
 class User{
-    int age; // private
-    QString name; //private
-    static int total_count;
+private:
+    short age;
+    QString name;
+    static size_t total_count;
 public:
-    explicit User(QString name, int age=18){
-        if(age>=18){
+    explicit User(QString name, short age=18){
+        if(age>=18)
+        {
             this->age=age;
-        }else{
+        }
+        else
+        {
             this->age=18;
         }
         this->name=name;
         total_count++;
     }
+
     QString getName(){
         return name;
     }
-    int getAge(){
+
+    short getAge(){
         return age;
     }
-    static int getTotalCount(){
-        return total_count;
+
+    static size_t getTotalCount(){
+        return users.size();
     }
-    static std::vector<User> users_;
+
+    static std::vector<User> users;
+
+    void deleteUserByIndex(unsigned long indexOfDeletedUser) {
+        if (indexOfDeletedUser <= users.size()) {
+            users.erase(users.begin() + indexOfDeletedUser);
+        }
+        else {
+            qDebug() << "Index of this user is more that our database can contain.";
+        }
+    }
+
+    void addUser(User newfag) {
+        users.push_back(newfag);
+    }
+
+    void deleteUserByName(QString deletedName) {
+        for (unsigned long i = 0; i < users.size(); i++) {
+            if (users[i].getName() == deletedName) {
+                users.erase(users.begin() + i);
+                qDebug() << "Deleted successfully.";
+            }
+            else {
+                qDebug() << "User had already been deleted - or just doesn't exist.";
+            }
+        }
+    }
+
 };
 
-int User::total_count = 0;
-std::vector<User> User::users_;
+size_t User::total_count = 0;
+std::vector<User> User::users;
 
 void MainWindow::on_submitPushButton_clicked()
 {
@@ -58,11 +92,11 @@ void MainWindow::on_submitPushButton_clicked()
     // qDebug() << "Age:" << student.getAge();
     qDebug() << msg.exec();
     qDebug() << User::getTotalCount();
-    User::users_.push_back(student);
+    User::users.push_back(student);
     //qDebug() << "Last student age:" << User::users_.end()->getAge();
     //qDebug() << "Last student name:" << User::users_.end()->getName();
-    qDebug() << "Total count:" << User::users_.size();
-    qDebug() << "First student name ([0]):" << User::users_[0].getName();
-    qDebug() << "First student name (at):" << User::users_.at(0).getName();
+    qDebug() << "Total count:" << User::users.size();
+    qDebug() << "First student name ([0]):" << User::users[0].getName();
+    qDebug() << "First student name (at):" << User::users.at(0).getName();
     qDebug() << "------------------------";
 }
