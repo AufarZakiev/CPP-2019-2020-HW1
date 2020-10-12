@@ -41,6 +41,23 @@ public:
         return total_count;
     }
     static std::vector<User> users_;
+
+    static void addStudent(User user) {
+        User::users_.push_back(user);
+    }
+
+    static void deleteByName(QString name) {
+        int count = User::getTotalCount();
+        for(int i = 0; i < count; i++) {
+            if(User::users_[i].name == name){
+                User::users_.erase(User::users_.begin() + i);
+            }
+        }
+    }
+
+    static void deleteByIndex(int index) {
+        User::users_.erase(User::users_.begin() + index);
+    }
 };
 
 int User::total_count = 0;
@@ -49,20 +66,31 @@ std::vector<User> User::users_;
 void MainWindow::on_submitPushButton_clicked()
 {
     qDebug() << "User clicked on submit button";
-    // ui->nameLineEdit->setText("Aufar");
-    User student(ui->nameLineEdit->text(), ui->ageLineEdit->text().toInt());
 
-    QMessageBox msg(QMessageBox::Information,"New student arrived!",
-                    "Hello "+ student.getName() + "!");
-    // qDebug() << "Name:" << student.getName();
-    // qDebug() << "Age:" << student.getAge();
-    qDebug() << msg.exec();
-    qDebug() << User::getTotalCount();
-    User::users_.push_back(student);
-    //qDebug() << "Last student age:" << User::users_.end()->getAge();
-    //qDebug() << "Last student name:" << User::users_.end()->getName();
-    qDebug() << "Total count:" << User::users_.size();
-    qDebug() << "First student name ([0]):" << User::users_[0].getName();
-    qDebug() << "First student name (at):" << User::users_.at(0).getName();
+    QString studentName = ui->nameLineEdit->text();
+    int studentAge = ui->ageLineEdit->text().toInt();
+
+    if (!studentName.trimmed().isEmpty()) {
+
+        User student(studentName, studentAge);
+        QString GreetingMsg = "Hello " + student.getName();
+
+        QMessageBox msg(QMessageBox::Information, "New student arrived !", GreetingMsg);
+        msg.exec();
+
+        qDebug() << "Student name: "
+                 << student.getName()
+                 << "\nStudent age: "
+                 << student.getAge();
+
+        qDebug() << student.getTotalCount();
+    }
+    else {
+        QMessageBox msg(QMessageBox::Warning, "Student name", "Please, enter student name");
+        msg.exec();
+    }
+
+    //qDebug() << "First student name ([0]):" << User::users_[0].getName();
+    //qDebug() << "First student name (at):" << User::users_.at(0).getName();
     qDebug() << "------------------------";
 }
