@@ -16,34 +16,68 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
 class User{
     int age; // private
     QString name; //private
-    static int total_count;
+    //static int total_count;
 public:
-    explicit User(QString name, int age=18){
-        if(age>=18){
-            this->age=age;
-        }else{
-            this->age=18;
+    explicit User(QString name, int age = 18)
+    {
+        if (age >= 18)
+        {
+            this->age = age;
         }
-        this->name=name;
-        total_count++;
+        else
+        {
+            this->age = 18;
+        }
+        this->name = name;
     }
-    QString getName(){
+    QString getName()
+    {
         return name;
     }
-    int getAge(){
+    int getAge()
+    {
         return age;
     }
-    static int getTotalCount(){
-        return total_count;
+    static int getTotalCount()
+    {
+        return users_.size();
     }
+
     static std::vector<User> users_;
+
+    void AddUser(User stud)
+    {
+        users_.push_back(stud);
+    }
+
+    void DeleteByIndex(int k)
+    {
+        if (k <= users_.size())
+        {
+            users_.erase(users_.begin() + k - 1);
+        }
+    }
+
+    void DeleteByName(QString name)
+    {
+        for (int i = 0; i < users_.size(); i++)
+        {
+            if (users_[i].getName() == name)
+            {
+                users_.erase(users_.begin() + i);
+                break;
+            }
+        }
+    }
+    int GetCount()
+    {
+        return users_.size();
+    }
 };
 
-int User::total_count = 0;
 std::vector<User> User::users_;
 
 void MainWindow::on_submitPushButton_clicked()
