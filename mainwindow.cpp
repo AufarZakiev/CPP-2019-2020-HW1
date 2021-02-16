@@ -18,9 +18,8 @@ MainWindow::~MainWindow()
 
 
 class User{
-    int age; // private
-    QString name; //private
-    static int total_count;
+    int age;
+    QString name;
 public:
     explicit User(QString name, int age=18){
         if(age>=18){
@@ -28,8 +27,7 @@ public:
         }else{
             this->age=18;
         }
-        this->name=name;
-        total_count++;
+        this->name=name;      
     }
     QString getName(){
         return name;
@@ -37,68 +35,55 @@ public:
     int getAge(){
         return age;
     }
-    static int getTotalCount(){
-        return total_count;
+
+    static size_t getTotalCount(){
+        return users_.size();
+    }
+
+    static void addStudent(QString name,int age){
+        User student(name,age);
+        users_.push_back(student);
+    }
+
+    static bool deleteStudentByIndex(size_t index){
+      if((index<0)||(index>=getTotalCount()))
+          {
+             return false;
+          }
+      else{
+             users_.erase(users_.begin()+index);
+             return true;
+          }
+    }
+
+    static void deleteStudentByName(QString name){
+        for(size_t i = 0; i < users_.size(); i++){
+            if(name == users_[i].name)
+                users_.erase(users_.begin()+i);
+        }
     }
     static std::vector<User> users_;
 };
-
-int User::total_count = 0;
 std::vector<User> User::users_;
-
-
-
 
 void MainWindow::on_submitPushButton_clicked()
 {
     qDebug() << "User clicked on submit button";
     // ui->nameLineEdit->setText("Aufar");
-
     User student(ui->nameLineEdit->text(), ui->ageLineEdit->text().toInt());
 
-
-     QMessageBox msg(QMessageBox::Information,"New student arrived!",
+    QMessageBox msg(QMessageBox::Information,"New student arrived!",
                     "Hello "+ student.getName() + "!");
     // qDebug() << "Name:" << student.getName();
     // qDebug() << "Age:" << student.getAge();
     qDebug() << msg.exec();
     qDebug() << User::getTotalCount();
     User::users_.push_back(student);
-
-   if(ui->nameLineEdit->text().isEmpty()){
-      qDebug() << "Error, no name given";
-      User::users_.pop_back();
-      QMessageBox msg(QMessageBox::Information,"Error",
-                     "no name given ");
-
-}
-
     //qDebug() << "Last student age:" << User::users_.end()->getAge();
     //qDebug() << "Last student name:" << User::users_.end()->getName();
     qDebug() << "Total count:" << User::users_.size();
     qDebug() << "First student name ([0]):" << User::users_[0].getName();
     qDebug() << "First student name (at):" << User::users_.at(0).getName();
     qDebug() << "------------------------";
-
-    if(!ui->DeleteIndexlineEdit->text().isEmpty()){
-        qDebug() << "Student with index: " << ui->DeleteIndexlineEdit->text()<< " successfully removed";
-         User::users_.erase(User::users_.begin()+(ui->DeleteIndexlineEdit->text().toInt())-1);
-    }
-    bool flag = false;
-
-    if(!ui->DeleteNamelineEdit->text().isEmpty()){
-         for (int i =0;i< User::users_.size(); i++ ) {
-             if(User::users_[i].getName()==ui->DeleteNamelineEdit->text()){
-                  qDebug() << "Student with the name: " << ui->DeleteNamelineEdit->text()<< " successfully removed";
-                  User::users_.erase(User::users_.begin()+i);
-                 flag=true;
-             }
-         }
-         if (!flag){
-              qDebug() << "No student with such name ";
-         }
-    }
-    for (int i =0;i< User::users_.size(); i++ ) {
-        qDebug()<< User::users_.at(i).getName() << '#';
-    }
 }
+
