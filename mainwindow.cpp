@@ -66,3 +66,24 @@ void MainWindow::on_submitPushButton_clicked()
     qDebug() << "First student name (at):" << User::users_.at(0).getName();
     qDebug() << "------------------------";
 }
+void MainWindow::on_pushButton_clicked()
+{
+    User::users_.erase(User::users_.begin()+ui->nameLabel->text().toInt());
+    QMessageBox msg(QMessageBox::Information,"Delete student!",
+                    "Index"+ui->lineEdit->text()+" was deleted");
+    qDebug() << msg.exec();
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    for(int i =0; i<User::getTotalCount(); i++){
+        if(User::users_[i].getName()==ui->lineEdit_2->text()){
+            User::users_.erase(User::users_.begin()+i);
+            QMessageBox msg(QMessageBox::Information,"Delete student!",
+                            "Name "+ui->lineEdit_2->text()+" was deleted");
+            qDebug() << msg.exec();
+            break;
+        }
+    }
+
+}
