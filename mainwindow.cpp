@@ -15,8 +15,9 @@ MainWindow::~MainWindow()
 
 class User
 {
-  int age;
-  QString name;
+  int age;       // private
+  QString name;  // private
+  static int total_count;
 
 public:
   explicit User(QString name, int age = 18)
@@ -30,6 +31,7 @@ public:
       this->age = 18;
     }
     this->name = name;
+    total_count++;
   }
   QString getName()
   {
@@ -39,41 +41,39 @@ public:
   {
     return age;
   }
-
-  static size_t getTotalCount()
+  static int getTotalCount()
   {
-    return users_.size();
+    return total_count;
   }
-
-  static void addStudent(QString name, int age)
+  static void addUser(QString name, int age)
   {
-    User student(name, age);
-    users_.push_back(student);
+    User user(name, age);
   }
-
-  static bool deleteStudentByIndex(size_t index)
+  static bool removeByIndex(int index)
   {
-    if ((index < 0) || (index >= getTotalCount()))
-    {
-      return false;
-    }
-    else
+    if (index < users_.size())
     {
       users_.erase(users_.begin() + index);
       return true;
     }
+    return false;
   }
-
-  static void deleteStudentByName(QString name)
+  static bool removeByName(QString name)
   {
-    for (size_t i = 0; i < users_.size(); i++)
+    for (int i = 0; i < users_.size(); i++)
     {
-      if (name == users_[i].name)
+      if (users_[i].getName() == name)
+      {
         users_.erase(users_.begin() + i);
+        return true;
+      }
     }
+    return false;
   }
   static std::vector<User> users_;
 };
+
+int User::total_count = 0;
 std::vector<User> User::users_;
 
 void MainWindow::on_submitPushButton_clicked()
